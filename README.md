@@ -1,4 +1,4 @@
-# Actividad2_Grupo12
+# Actividad 2 Grupo 12
 Actividad 2 de la asignatura Equipos e Instrumentación Electrónica del Grupo 12
 
 ## 1. Introducción
@@ -11,13 +11,13 @@ El objetivo de la presente práctica ha sido diseñar e implementar un sistema i
  
  A lo largo del desarrollo, se han seguido los pasos recomendados para:
 	
-	Extender el sistema de medición de la Actividad 1 incorporando nuevos sensores y acondicionadores
-	Definir e implementar algoritmos de control ON-OFF para regular temperatura y humedad
- 	Definir e implementar histéresis en los algoritmos de control para mejorar la estabilidad en entornos reales
-	Programar la lectura de una LDR para ajustar el brillo de un LED de forma proporcional
-	Integrar todos los componentes en una sola plataforma (Arduino Uno) y presentar la información en un display LCD
-	Realizar pruebas de funcionamiento y documentar resultados
-	Evaluar ventajas y desventajas del sistema creado
++ Extender el sistema de medición de la Actividad 1 incorporando nuevos sensores y acondicionadores
++ Definir e implementar algoritmos de control ON-OFF para regular temperatura y humedad
++ Definir e implementar histéresis en los algoritmos de control para mejorar la estabilidad en entornos reales
++ Programar la lectura de una LDR para ajustar el brillo de un LED de forma proporcional
++ Integrar todos los componentes en una sola plataforma (Arduino Uno) y presentar la información en un display LCD
++ Realizar pruebas de funcionamiento y documentar resultados
++ Evaluar ventajas y desventajas del sistema creado
 
 ## 2. Diseño del Sistema
 
@@ -25,50 +25,50 @@ El objetivo de la presente práctica ha sido diseñar e implementar un sistema i
 
 Microcontrolador:
 	
-	Arduino Uno
++ Arduino Uno
 	
 Sensores:
 
-	DHT22 (temperatura y humedad)
-	LDR (resistencia dependiente de la luz)
++ DHT22 (temperatura y humedad)
++ LDR (resistencia dependiente de la luz)
 	
 Actuadores:
 
-	Dos servomotores para climatización (calefacción/ventilación)
-	Servomotor para control de humedad (simulación de turbina)
-	LED cuya luminosidad se regula según nivel de luz ambiente
++ Dos servomotores para climatización (calefacción/ventilación)
++ Servomotor para control de humedad (simulación de turbina)
++ LED cuya luminosidad se regula según nivel de luz ambiente
 
 Pantalla de Presentación:
 
-	Display LCD 16×2 con interfaz I2C
++ Display LCD 16×2 con interfaz I2C
 	
 Alimentación:
 
-	Fuente de 5 V (del propio Arduino o módulo externo en caso de demanda mayor)
++ Fuente de 5 V (del propio Arduino o módulo externo en caso de demanda mayor)
 
 ### 2.2. Diagrama de Conexiones
 
 Se ha diseñado el siguiente esquema de conexión (simulado en Wokwi):
 
-	DHT22 conectado a pin digital D12 (datos)
-	LDR conectada a A0 con una resistencia de pull-down de 10 kΩ
-	Servomotor 1 (ventilación) conectado a pin digital D2
-	Servomotor 2 (calefacción) conectado a pin digital D3
-	Servomotor adicional para control de humedad conectado a pin digital D4
-	LED de indicación de luminosidad conectado a pin PWM D5
-	Display LCD I2C conectado a los pines SDA (A4) y SCL (A5) del Arduino
++ DHT22 conectado a pin digital D12 (datos)
++ LDR conectada a A0 con una resistencia de pull-down de 10 kΩ
++ Servomotor 1 (ventilación) conectado a pin digital D2
++ Servomotor 2 (calefacción) conectado a pin digital D3
++ Servomotor adicional para control de humedad conectado a pin digital D4
++ LED de indicación de luminosidad conectado a pin PWM D5
++ Display LCD I2C conectado a los pines SDA (A4) y SCL (A5) del Arduino
 
 ## 3. Implementación del Sistema
 
 A continuación se resumen los pasos seguidos para la implementación del sistema:
  
-### 3.1 General
+### 3.1. General
 
-Se ha definido un tiempo de sincronización aproximado de 100ms, por lo que todas las funciones se ejecutan cada 100ms.
+Los parámetros de implementación general del sistema son:
 
-Se han definido macros para los parámetros de los actuadores, como valores máximos y mínimos.
-
-La única función bloqueante se encuentra en el loop(), para impedir una violación del sincronismo.
++ Se ha definido un tiempo de sincronización aproximado de 100ms, por lo que todas las funciones se ejecutan cada 100ms.
++ Se han definido macros para los parámetros de los actuadores, como valores máximos y mínimos.
++ La única función bloqueante se encuentra en el loop(), para impedir una violación del sincronismo.
 
 ### 3.2. Lectura de Sensores y Presentación Inicial (Actividad 1)
 
@@ -76,11 +76,11 @@ Previamente, en la Actividad 1, se había desarrollado la parte de medición y p
  	
 Para ello:
 
-	Se utilizó la librería DHT.h para leer datos de temperatura y humedad desde el sensor DHT22
-	Se implementó la lectura analógica de la LDR para obtener un valor bruto entre 0 y 1023, que se convertía a lux aproximados
-	Se empleó la librería LiquidCrystal_I2C.h para mostrar en pantalla LCD los valores actuales de temperatura, humedad y lux
-	Se validaron las lecturas en Wokwi, asegurando que los datos presentados en la pantalla concordaban con las variaciones simuladas de los sensores
-	Estos pasos iniciales sentaron las bases para la integración de los algoritmos de control y actuación
++ Se utilizó la librería DHT.h para leer datos de temperatura y humedad desde el sensor DHT22
++ Se implementó la lectura analógica de la LDR para obtener un valor bruto entre 0 y 1023, que se convertía a lux aproximados
++ Se empleó la librería LiquidCrystal_I2C.h para mostrar en pantalla LCD los valores actuales de temperatura, humedad y lux
++ Se validaron las lecturas en Wokwi, asegurando que los datos presentados en la pantalla concordaban con las variaciones simuladas de los sensores
++ Estos pasos iniciales sentaron las bases para la integración de los algoritmos de control y actuación
 
 ### 3.3. Control y Actuación sobre Humedad
 
@@ -222,31 +222,31 @@ Cada 5s, la pantalla cambia de modo para mostrar los sensores o los actuadores; 
 
 La función de control de la pantalla y sus subalgoritmos son excesivamente largos para ser reflejados aquí, se puede resumir en que hay las siguientes funciones:
  
-Función principal que recibe todos los valores y decide qué modo (sensores o actuadores) mostrar:
++ Función principal que recibe todos los valores y decide qué modo (sensores o actuadores) mostrar:
 
  	void lcdPrint(float temperature, float humidity, float lux, bool coolingOn, bool heatingOn, bool dryingOn, unsigned int lightPercent)
   
-Función que imprime los valores leidos de los sensores (forcePrint fuerza una actualización de la pantalla, se usa en caso de cambiar de modo o de error):
++ Función que imprime los valores leidos de los sensores (forcePrint fuerza una actualización de la pantalla, se usa en caso de cambiar de modo o de error):
 
  	void printSensorReadings(float temperature, float humidity, float lux, bool forcePrint)
   
-Función que imprime el estado de los actuadores:
++ Función que imprime el estado de los actuadores:
 
    	void printActuatorStatus(bool coolingSystemStatus, bool heatingSystemStatus, bool humiditySystemStatus, float lightSystemStatus, bool forcePrint)
     
-Función que imprime una cadena de carácteres en una columna y fila específica; devuelve el número de carácteres escritos:
++ Función que imprime una cadena de carácteres en una columna y fila específica; devuelve el número de carácteres escritos:
 
      	int lcdPrint(const char* text, const int column, const int row)
       
-Función que imprime un número flotante en una columna y fila específica; devuelve el número de carácteres escritos:
++ Función que imprime un número flotante en una columna y fila específica; devuelve el número de carácteres escritos:
 
 	int lcdPrint(const float number, const int column, const int row)
  
-Función que imprime un carácter definido por el usuario en una columna y fila específica; devuelve 1 para mantener el estílo de código:
++ Función que imprime un carácter definido por el usuario en una columna y fila específica; devuelve 1 para mantener el estílo de código:
 
   	int lcdPrintCustom(const int characterID, const int column, const int row)
    
-Función que imprime un título en la pantalla:
++ Función que imprime un título en la pantalla:
 
     	void printTitle(const char* title, const char character)
 
@@ -254,26 +254,26 @@ A parte de los 2 modos anteriormente expuestos, la pantalla también muestra err
 	
 ## 4. Pruebas Realizadas
 
-	Comprobación de lecturas del sensor DHT22 (temperatura y humedad)
-	Verificación de lectura de valores en lux con LDR
-	Ensayo de activación del servomotor de humedad al superar el umbral
-	Ensayo de control de brillo del LED según diferentes niveles de lux
-	Prueba de activación de ambos servomotores de temperatura en función de los límites establecidos
-	Ejecución continua del sistema para confirmar la integración de todos los componentes en el loop()
++ Comprobación de lecturas del sensor DHT22 (temperatura y humedad)
++ Verificación de lectura de valores en lux con LDR
++ Ensayo de activación del servomotor de humedad al superar el umbral
++ Ensayo de control de brillo del LED según diferentes niveles de lux
++ Prueba de activación de ambos servomotores de temperatura en función de los límites establecidos
++ Ejecución continua del sistema para confirmar la integración de todos los componentes en el loop()
 
 ## 5. Ventajas y Desventajas del Sistema Creado
 
 ### 5.1 Ventajas:
 
-	Diseño modular: funciones de control separadas facilitan mantenimiento y ampliaciones
-	Componentes económicos y fáciles de conseguir
-	Respuesta rápida a cambios de variables climáticas
-	Simulación previa en Wokwi agiliza pruebas
- 	Histéreis en el control de la temperatura y la humedad
++ Diseño modular: funciones de control separadas facilitan mantenimiento y ampliaciones
++ Componentes económicos y fáciles de conseguir
++ Respuesta rápida a cambios de variables climáticas
++ Simulación previa en Wokwi agiliza pruebas
++ Histéreis en el control de la temperatura y la humedad
 
 ### 5.2 Desventajas:
 
-	La falta de histéresis en el control de iluminación podría causar oscilaciones y encendidos / apagados frecuentes.
-	Movimiento completo de servos en cada activación (ineficiente para un actuador real)
-	En hardware real, consumo de servos puede requerir fuente externa
-	Ausencia de registro histórico de datos (no hay almacenamiento ni transmisión remota)
++ La falta de histéresis en el control de iluminación podría causar oscilaciones y encendidos / apagados frecuentes.
++ Movimiento completo de servos en cada activación (ineficiente para un actuador real)
++ En hardware real, consumo de servos puede requerir fuente externa
++ Ausencia de registro histórico de datos (no hay almacenamiento ni transmisión remota)
