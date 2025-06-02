@@ -20,3 +20,33 @@ void humidityServo(float humidity){
     }
   }
 }<br/>
+
+
+-------------- PARTE DE LUCÍA ------------------<br/>
+Control del brillo del LED según la luz ambiental (LDR)
+
+Esta sección del código lee el nivel de luz ambiental utilizando una LDR (resistencia dependiente de la luz), lo convierte en un valor de lux y ajusta el brillo de un LED de acuerdo a dicho valor:
+
+loat lux = readLux();
+int brightness = 0;
+
+if (lux <= 20) {
+    // Si la luz (lux) es baja, el LED se enciende al máximo brillo
+    brightness = 255;
+} else if (lux >= 20 && lux <= 2000) {
+    // Si la luz es moderada, el LED se enciende con brillo medio
+    brightness = 60;
+} else {
+    // Si hay mucha luz, el LED se apaga
+    brightness = 0;
+}
+
+Explicación:
+	•	Luz baja (lux ≤ 20):
+El entorno está oscuro, por lo que el LED se enciende con brillo máximo (brightness = 255) para aportar visibilidad.
+	•	Luz moderada (20 < lux ≤ 2000):
+En condiciones de luz intermedia, el brillo del LED se ajusta a un nivel medio (brightness = 60), ya que no se requiere tanta iluminación.
+	•	Luz alta (lux > 2000):
+Cuando hay mucha luz ambiente, el LED se apaga (brightness = 0) porque no es necesario iluminar más.
+
+Este comportamiento permite que el LED actúe como un indicador dinámico o fuente de luz ambiental, reaccionando de forma inteligente a los cambios en la iluminación del entorno.
