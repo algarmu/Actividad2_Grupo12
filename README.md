@@ -37,13 +37,13 @@ Actividad 2 de la asignatura Equipos e Instrumentación Electrónica del Grupo 1
 2.2. Diagrama de Conexiones
 
 	Se ha diseñado el siguiente esquema de conexión (simulado en Wokwi):
-		DHT22 conectado a pin digital D4 (datos)
-		LDR conectada a A0 con una resistencia de pull-down de 10 kΩ
-		Servomotor 1 (ventilación) conectado a pin digital D3
-		Servomotor 2 (calefacción) conectado a pin digital D2
-		Servomotor adicional para control de humedad conectado a pin digital D9
-		LED de indicación de luminosidad conectado a pin PWM D5
-		Display LCD I2C conectado a los pines SDA (A4) y SCL (A5) del Arduino
+		- DHT22 conectado a pin digital D4 (datos)
+		- LDR conectada a A0 con una resistencia de pull-down de 10 kΩ
+		- Servomotor 1 (ventilación) conectado a pin digital D3
+		- Servomotor 2 (calefacción) conectado a pin digital D2
+		- Servomotor adicional para control de humedad conectado a pin digital D9
+		- LED de indicación de luminosidad conectado a pin PWM D5
+		- Display LCD I2C conectado a los pines SDA (A4) y SCL (A5) del Arduino
 
 3. Implementación del Sistema
 
