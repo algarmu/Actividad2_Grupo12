@@ -161,10 +161,6 @@ Actividad 2 de la asignatura Equipos e Instrumentación Electrónica del Grupo 1
 
 5. Ventajas y Desventajas del Sistema Creado
 
-	A continuación se exponen las principales ventajas y desventajas identificadas tras la implementación y las pruebas del sistema:
-
-5. Ventajas y Desventajas
-
 5.1 Ventajas:
 
 	Diseño modular: funciones de control separadas facilitan mantenimiento y ampliaciones
