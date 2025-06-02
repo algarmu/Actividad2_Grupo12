@@ -144,6 +144,7 @@ Actividad 2 de la asignatura Equipos e Instrumentación Electrónica del Grupo 1
 ##################################cristobal##################################################
 
 4. Pruebas Realizadas
+
 	Comprobación de lecturas del sensor DHT22 (temperatura y humedad)
 	Verificación de lectura de valores en lux con LDR
 	Ensayo de activación del servomotor de humedad al superar el umbral
@@ -155,6 +156,7 @@ Actividad 2 de la asignatura Equipos e Instrumentación Electrónica del Grupo 1
 	A continuación se exponen las principales ventajas y desventajas identificadas tras la implementación y las pruebas del sistema:
 
 5. Ventajas y Desventajas
+
 	Ventajas:
 	
 		Diseño modular: funciones de control separadas facilitan mantenimiento y ampliaciones
