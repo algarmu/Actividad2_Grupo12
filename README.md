@@ -51,100 +51,131 @@ Actividad 2 de la asignatura Equipos e Instrumentación Electrónica del Grupo 1
 
 3.1. Lectura de Sensores y Presentación Inicial (Actividad 1)
 
-	Previamente, en la Actividad 1, se había desarrollado la parte de medición y presentación de las variables de temperatura, humedad y luminosidad en el LCD. Para ello:
-		Se utilizó la librería DHT.h para leer datos de temperatura y humedad desde el sensor DHT22
-		Se implementó la lectura analógica de la LDR para obtener un valor bruto entre 0 y 1023, que se convertía a lux aproximados
-		Se empleó la librería LiquidCrystal_I2C.h para mostrar en pantalla LCD los valores actuales de temperatura, humedad y lux
-		Se validaron las lecturas en Wokwi, asegurando que los datos presentados en la pantalla concordaban con las variaciones simuladas de los sensores
-		Estos pasos iniciales sentaron las bases para la integración de los algoritmos de control y actuación
+	Previamente, en la Actividad 1, se había desarrollado la parte de medición y presentación de las variables de temperatura, humedad y luminosidad en el LCD.
+ 	Para ello:
+		- Se utilizó la librería DHT.h para leer datos de temperatura y humedad desde el sensor DHT22
+		- Se implementó la lectura analógica de la LDR para obtener un valor bruto entre 0 y 1023, que se convertía a lux aproximados
+		- Se empleó la librería LiquidCrystal_I2C.h para mostrar en pantalla LCD los valores actuales de temperatura, humedad y lux
+		- Se validaron las lecturas en Wokwi, asegurando que los datos presentados en la pantalla concordaban con las variaciones simuladas de los sensores
+		- Estos pasos iniciales sentaron las bases para la integración de los algoritmos de control y actuación
 
 3.2. Control y Actuación sobre Humedad
 
-	En esta sección, se lee el valor de humedad obtenido por el sensor DHT22, activando un sevomotor cuando el nivel de humedad relativa supera el 50%,simulando una turbina que permite la liberación de humedad cuando esta es demasiado elevada, esta funcionalidad se implementa en la siguiente función:
-	
-	void humidityServo(float humidity){
-	  int pos; // int variable for controlling the servo position
-	  //if humidity > 50% -> servo start acting
-	  if ((float)humidity>=50){ 
-	    //logic for the movement of the servo
-	    for (pos = 0; pos <= 180; pos += 1) { // goes from 0 degrees to 180 degrees
-	      // in steps of 1 degree
-	      myservo.write(pos);              // tell servo to go to position in variable 'pos'
-	      delay(15);                       // waits 15ms for the servo to reach the position
-	    }
-	    for (pos = 180; pos >= 360; pos += 1) { // goes from 180 degrees to 0 degrees
-	      myservo.write(pos);              // tell servo to go to position in variable 'pos'
-	      delay(15);                       // waits 15ms for the servo to reach the position
-	    }
-	  }
-	}<br/>
+	En esta sección, se lee el valor de humedad obtenido por el sensor DHT22, activando un sevomotor cuando el nivel de humedad relativa supera el 80%, con una histéresis del 10%, simulando una turbina que permite la liberación de humedad cuando esta es demasiado elevada, esta funcionalidad se implementa en la siguiente función:
+	Las macros que definen el comportamiento del actuador son :
+ 	#define MAX_HUMIDITY 80 //Humedad máxima en porcentaje
+	#define HUMIDITY_BIAS 10 //Histéresis
 
+bool controlHumidity(float humidity){
+  static int position = 0;
+  static bool positiveTurning = true;
+  static bool isOn = false;
 
+  //If the maximun temperature has been reached
+  //or the system is in ON state and the (MAX_TEMPERATURE - TEMPERATURE_BIAS) has not been reached yet
+  if((humidity > MAX_HUMIDITY) || (isOn && humidity >= (MAX_HUMIDITY - HUMIDITY_BIAS))){
+    moveServo(dryingServo, position, positiveTurning);
+    isOn = true;
+  }
+  else{
+    isOn = false;
+  }
+
+  return isOn;
+}
 
 3.3. Control del brillo del LED según la luz ambiental (LDR)
 
-	Esta sección del código lee el nivel de luz ambiental utilizando una LDR (resistencia dependiente de la luz), lo convierte en un valor de lux y ajusta el brillo de un LED de acuerdo a dicho valor:
+	Esta sección del código lee el nivel de luz ambiental utilizando una LDR (resistencia dependiente de la luz), lo convierte en un valor de lux y ajusta el brillo de un LED.
+ 	El LED comienza a brillar a un 50% de su potencia total con 6000 lux, de forma progresiva, aumenta este valor al 100% de potencia al llegar a 1000 lux.
+	Las macros que definen el comportamiento del actuador son :
+ 	#define MIN_BRIDHTNESS 50 //Porcentaje de brillo del LED mínimo
+	#define BRIDHTNESS_PER_THOUSAND_LUX 10 //Incremento de potencia en porcentaje del LED cada 1000 lux
+	#define MIN_LUX 6000 //Lux mínima para el encendido del LED
+  
+  	La función que implementa este comportamiento es:
 	
-	loat lux = readLux();
-	int brightness = 0;
-	
-	if (lux <= 20) {
-	    // Si la luz (lux) es baja, el LED se enciende al máximo brillo
-	    brightness = 255;
-	} else if (lux >= 20 && lux <= 2000) {
-	    // Si la luz es moderada, el LED se enciende con brillo medio
-	    brightness = 60;
-	} else {
-	    // Si hay mucha luz, el LED se apaga
-	    brightness = 0;
-	}
-	
-	Explicación:
-		•	Luz baja (lux ≤ 20):
-	El entorno está oscuro, por lo que el LED se enciende con brillo máximo (brightness = 255) para aportar visibilidad.
-		•	Luz moderada (20 < lux ≤ 2000):
-	En condiciones de luz intermedia, el brillo del LED se ajusta a un nivel medio (brightness = 60), ya que no se requiere tanta iluminación.
-		•	Luz alta (lux > 2000):
-	Cuando hay mucha luz ambiente, el LED se apaga (brightness = 0) porque no es necesario iluminar más.
-	
-	Este comportamiento permite que el LED actúe como un indicador dinámico o fuente de luz ambiental, reaccionando de forma inteligente a los cambios en la iluminación del entorno.
+  unsigned int controlBrightness(float lux){
+  unsigned int powerPercent = 0;
+
+  //If the minimux level has been reached
+  if(lux < MIN_LUX){
+    //Calculate the power percent
+    powerPercent = MIN_BRIDHTNESS + (BRIDHTNESS_PER_THOUSAND_LUX * (-1 * (lux - MIN_LUX) / 1000));
+
+    if(powerPercent > 100){
+      powerPercent = 100;
+    }
+
+    setPWM_Percent(LED_PIN, powerPercent);
+  }
+  else{
+    powerPercent = 0;
+  }
+
+  setPWM_Percent(LED_PIN, powerPercent);
+
+  return powerPercent;
+}
 
 3.4. Control de Temperatura con Dos Servomotores
 	
-	El sistema utiliza un sensor DHT22 para medir la temperatura ambiente, esta lectura se muestra en una pantalla LCD. Para responder a las variaciones de temperatura, se han incorporado dos servomotores conectados a los pines digitales 3 y 2, que simulan distintos mecanismos de climatización. Cuando la temperatura supera los 28 °C, el servomotor con aspas rojas, se activa para simular la ventilación. En cambio, si la temperatura baja de los 22 °C, entra en acción el segundo servomotor, con un brazo amarillo, que representa un sistema de calentamiento. En el rango intermedio (22 °C - 28 °C), ambos servomotores permanecen inactivos.
-	
-	void tempServo(float temperature){
-	    // Control of the fan (high temperature)
-	    if (temperature > 28) {
-	      for (int p = 0; p <= 180; p += 10) {
-	      fanServo.write(p);
-	      delay(15);
-	      }
-	      for (int p = 180; p >= 0; p -= 10) {
-	      fanServo.write(p);
-	      delay(15);
-	      }
-	    } else if (temperature < 22) {
-	      for (int p = 0; p <= 180; p += 10) {
-	      fanServo2.write(p);
-	      delay(15);
-	      }
-	      for (int p = 180; p >= 0; p -= 10) {
-	      fanServo2.write(p);
-	      delay(15);
-	      }
-	    } else {
-	      fanServo.write(0);
-	      fanServo2.write(0);
-	    }
-	}
-	
-	Explicación:
-		•	Temperatura baja (temp < 22ºC):
-	El entorno es demasiado frío, por lo que se activa el servomotor amarillo que acciona un sistema en respuesta al frío.
-		•	Temperatura alta (temp > 28ºC):
-	En condiciones cálidas se activa el servomotor rojo, que representa un ventilador en respuesta al calor.
+	El sistema utiliza un sensor DHT22 para medir la temperatura ambiente. 
+ 	Para responder a las variaciones de temperatura, se han incorporado dos servomotores que simulan distintos mecanismos de climatización. 
+  	Cuando la temperatura supera los 28 °C, el servomotor con aspas azules, se activa para simular la ventilación. 
+   	En cambio, si la temperatura baja de los 22 °C, entra en acción el segundo servomotor, con un brazo rojo, que representa un sistema de calefacción. 
+    	Se ha añadido una histéresis de 2º a ambos actuadores, por lo que se ha definido una zona muerta entre 22º y 28º, con una histéresis de 2º.
 
+	Las macros que definen el comportamiento de los actuadores son :
+ 	#define MIN_TEMPERATURE 21 //Temperatura máxima
+	#define MAX_TEMPERATURE 27 //Temperatura mínima
+	#define TEMPERATURE_BIAS 2 //Histéresis
+  	(Los valores 21 y 27 se han definido ya que el microcontrolador trunca los valores decimales del sensor de temperatura)
+
+     	Esta función controla el comportamiento del actuador de ventilación:
+	
+//Control cooling system (servo)
+//Returns if the heating system is on
+bool controlCooling(int temperature){
+  static int position = 0;
+  static bool positiveTurning = true;
+  static bool isOn = false;
+
+  //If the maximun temperature has been reached
+  //or the system is in ON state and the (MAX_TEMPERATURE - TEMPERATURE_BIAS) has not been reached yet
+  if((temperature > MAX_TEMPERATURE) || (isOn && temperature >= ((MAX_TEMPERATURE - TEMPERATURE_BIAS)))){
+    moveServo(coolingServo, position, positiveTurning);
+    isOn = true;
+  }
+  else{
+    isOn = false;
+  }
+
+  return isOn;
+}
+
+
+      	Esta función controla el comportamiento del actuador de calefacción:
+
+//Control heating system (servo)
+//Returns if the heating system is on
+bool controlHeating(int temperature){
+  static int position = 0;
+  static bool positiveTurning = true;
+  static bool isOn = false;
+
+  //If the minimun temperature has been reached
+  //or the system is in ON state and the (MAX_TEMPERATURE - TEMPERATURE_BIAS) has not been reached yet
+  if((temperature < MIN_TEMPERATURE) || (isOn && temperature <= ((MIN_TEMPERATURE + TEMPERATURE_BIAS)))){
+    moveServo(heatingServo, position, positiveTurning);
+    isOn = true;
+  }
+  else{
+    isOn = false;
+  }
+
+  return isOn;
+}
 
 3.5. Integración de la Presentación en LCD
 
