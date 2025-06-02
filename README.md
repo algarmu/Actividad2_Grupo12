@@ -48,8 +48,12 @@ Actividad 2 de la asignatura Equipos e Instrumentación Electrónica del Grupo 1
 3. Implementación del Sistema
 
 	A continuación se resumen los pasos seguidos para la implementación del sistema:
+3.1 General
+	Se ha definido un tiempo de sincronización aproximado de 100ms, por lo que todas las funciones se ejecutan cada 100ms.
+	Se han definido macros para los parámetros de los actuadores, como valores máximos y mínimos.
+	La única función bloqueante se encuentra en el loop(), para impedir una violación del sincronismo.
 
-3.1. Lectura de Sensores y Presentación Inicial (Actividad 1)
+3.2. Lectura de Sensores y Presentación Inicial (Actividad 1)
 
 	Previamente, en la Actividad 1, se había desarrollado la parte de medición y presentación de las variables de temperatura, humedad y luminosidad en el LCD.
  	Para ello:
@@ -59,7 +63,7 @@ Actividad 2 de la asignatura Equipos e Instrumentación Electrónica del Grupo 1
 		- Se validaron las lecturas en Wokwi, asegurando que los datos presentados en la pantalla concordaban con las variaciones simuladas de los sensores
 		- Estos pasos iniciales sentaron las bases para la integración de los algoritmos de control y actuación
 
-3.2. Control y Actuación sobre Humedad
+3.3. Control y Actuación sobre Humedad
 
 	En esta sección, se lee el valor de humedad obtenido por el sensor DHT22, activando un sevomotor cuando el nivel de humedad relativa supera el 80%, con una histéresis del 10%, simulando una turbina que permite la liberación de humedad cuando esta es demasiado elevada, esta funcionalidad se implementa en la siguiente función:
 	Las macros que definen el comportamiento del actuador son :
@@ -84,7 +88,7 @@ bool controlHumidity(float humidity){
   return isOn;
 }
 
-3.3. Control del brillo del LED según la luz ambiental (LDR)
+3.4. Control del brillo del LED según la luz ambiental (LDR)
 
 	Esta sección del código lee el nivel de luz ambiental utilizando una LDR (resistencia dependiente de la luz), lo convierte en un valor de lux y ajusta el brillo de un LED.
  	El LED comienza a brillar a un 50% de su potencia total con 6000 lux, de forma progresiva, aumenta este valor al 100% de potencia al llegar a 1000 lux.
@@ -118,7 +122,7 @@ bool controlHumidity(float humidity){
   return powerPercent;
 }
 
-3.4. Control de Temperatura con Dos Servomotores
+3.5. Control de Temperatura con Dos Servomotores
 	
 	El sistema utiliza un sensor DHT22 para medir la temperatura ambiente. 
  	Para responder a las variaciones de temperatura, se han incorporado dos servomotores que simulan distintos mecanismos de climatización. 
@@ -177,10 +181,30 @@ bool controlHeating(int temperature){
   return isOn;
 }
 
-3.5. Integración de la Presentación en LCD
+3.6. Integración de la Presentación en LCD
 
-##################################cristobal##################################################
+	El sistema muestra los valores leidos por los sensores y el estado de los actuadores en un LCD de 4x20 píxeles.
+	Cada 5s, la pantalla cambia de modo para mostrar los sensores o los actuadores; el modo actual se muestra en la primera línea.
 
+	La función de control de la pantalla y sus subalgoritmos son excesivamente largos para ser reflejados aquí, se puede resumir en que hay las siguientes funciones:
+ 	-Función principal que recibe todos los valores y decide qué modo (sensores o actuadores) mostrar:
+ 	void lcdPrint(float temperature, float humidity, float lux, bool coolingOn, bool heatingOn, bool dryingOn, unsigned int lightPercent)
+	-Función que imprime los valores leidos de los sensores (forcePrint fuerza una actualización de la pantalla, se usa en caso de cambiar de modo o de error):
+ 	void printSensorReadings(float temperature, float humidity, float lux, bool forcePrint)
+  	-Función que imprime el estado de los actuadores:
+   	void printActuatorStatus(bool coolingSystemStatus, bool heatingSystemStatus, bool humiditySystemStatus, float lightSystemStatus, bool forcePrint)
+    	-Función que imprime una cadena de carácteres en una columna y fila específica; devuelve el número de carácteres escritos:
+     	int lcdPrint(const char* text, const int column, const int row)
+      	-Función que imprime un número flotante en una columna y fila específica; devuelve el número de carácteres escritos:
+	int lcdPrint(const float number, const int column, const int row)
+ 	-Función que imprime un carácter definido por el usuario en una columna y fila específica; devuelve 1 para mantener el estílo de código:
+  	int lcdPrintCustom(const int characterID, const int column, const int row)
+   	-Función que imprime un título en la pantalla:
+    	void printTitle(const char* title, const char character)
+
+     	A parte de los 2 modos anteriormente expuestos, la pantalla también muestra errores de lectura del sensor, si es que estos se producen.
+  	
+	
 4. Pruebas Realizadas
 
 	Comprobación de lecturas del sensor DHT22 (temperatura y humedad)
@@ -198,11 +222,11 @@ bool controlHeating(int temperature){
 	Componentes económicos y fáciles de conseguir
 	Respuesta rápida a cambios de variables climáticas
 	Simulación previa en Wokwi agiliza pruebas
+ 	Histéreis en el control de la temperatura y la humedad
 
 5.2 Desventajas:
 
-	Control ON-OFF sin histéresis ni regulación proporcional → posibles oscilaciones frecuentes
+	La falta de histéresis en el control de iluminación podría causar oscilaciones y encendidos / apagados frecuentes.
 	Movimiento completo de servos en cada activación (ineficiente para un actuador real)
-	Brillo de LED con solo tres niveles → transiciones bruscas
 	En hardware real, consumo de servos puede requerir fuente externa
 	Ausencia de registro histórico de datos (no hay almacenamiento ni transmisión remota)
