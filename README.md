@@ -1,7 +1,7 @@
 # Actividad2_Grupo12
 Actividad 2 de la asignatura Equipos e Instrumentación Electrónica del Grupo 12
 
--------------- PARTE DE SAMUEL ------------------<br/>
+Sistema de control de humedad mediante un servomotor<br/>
 En esta sección, se lee el valor de humedad obtenido por el sensor DHT22, activando un sevomotor cuando el nivel de humedad relativa supera el 50%,simulando una turbina que permite la liberación de humedad cuando esta es demasiado elevada, esta funcionalidad se implementa en la siguiente función:
 
 void humidityServo(float humidity){
