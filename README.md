@@ -224,31 +224,31 @@ La función de control de la pantalla y sus subalgoritmos son excesivamente larg
  
 + Función principal que recibe todos los valores y decide qué modo (sensores o actuadores) mostrar:
 
- 	void lcdPrint(float temperature, float humidity, float lux, bool coolingOn, bool heatingOn, bool dryingOn, unsigned int lightPercent)
+	+ `void lcdPrint(float temperature, float humidity, float lux, bool coolingOn, bool heatingOn, bool dryingOn, unsigned int lightPercent)`
   
 + Función que imprime los valores leidos de los sensores (forcePrint fuerza una actualización de la pantalla, se usa en caso de cambiar de modo o de error):
 
- 	void printSensorReadings(float temperature, float humidity, float lux, bool forcePrint)
+	+ `void printSensorReadings(float temperature, float humidity, float lux, bool forcePrint)`
   
 + Función que imprime el estado de los actuadores:
 
-   	void printActuatorStatus(bool coolingSystemStatus, bool heatingSystemStatus, bool humiditySystemStatus, float lightSystemStatus, bool forcePrint)
+	+ `void printActuatorStatus(bool coolingSystemStatus, bool heatingSystemStatus, bool humiditySystemStatus, float lightSystemStatus, bool forcePrint)`
     
 + Función que imprime una cadena de carácteres en una columna y fila específica; devuelve el número de carácteres escritos:
 
-     	int lcdPrint(const char* text, const int column, const int row)
+	+ `int lcdPrint(const char* text, const int column, const int row)`
       
 + Función que imprime un número flotante en una columna y fila específica; devuelve el número de carácteres escritos:
 
-	int lcdPrint(const float number, const int column, const int row)
+	+ `int lcdPrint(const float number, const int column, const int row)`
  
 + Función que imprime un carácter definido por el usuario en una columna y fila específica; devuelve 1 para mantener el estílo de código:
 
-  	int lcdPrintCustom(const int characterID, const int column, const int row)
+	+ `int lcdPrintCustom(const int characterID, const int column, const int row)`
    
 + Función que imprime un título en la pantalla:
 
-    	void printTitle(const char* title, const char character)
+	+ `void printTitle(const char* title, const char character)`
 
 A parte de los 2 modos anteriormente expuestos, la pantalla también muestra errores de lectura del sensor, si es que estos se producen.
 	
