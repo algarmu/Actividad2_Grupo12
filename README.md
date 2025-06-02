@@ -91,7 +91,9 @@ bool controlHumidity(float humidity){
 3.4. Control del brillo del LED según la luz ambiental (LDR)
 
 Esta sección del código lee el nivel de luz ambiental utilizando una LDR (resistencia dependiente de la luz), lo convierte en un valor de lux y ajusta el brillo de un LED.
+
 El LED comienza a brillar a un 50% de su potencia total con 6000 lux, de forma progresiva, aumenta este valor al 100% de potencia al llegar a 1000 lux.
+
 Las macros que definen el comportamiento del actuador son :
 
  	#define MIN_BRIDHTNESS 50 //Porcentaje de brillo del LED mínimo
