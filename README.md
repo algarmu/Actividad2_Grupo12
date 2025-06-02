@@ -3,7 +3,11 @@ Actividad 2 de la asignatura Equipos e Instrumentación Electrónica del Grupo 1
 
 ## 1. Introducción
 
-	El objetivo de la presente práctica ha sido diseñar e implementar un sistema integrado que permita la medición de variables climáticas (temperatura, humedad y luminosidad), el control y actuación sobre actuadores (servomotores y LEDs) en función de dichas mediciones, y la presentación de la información relevante en una interfaz LCD. 
+### 1.1. Objetivo
+
+El objetivo de la presente práctica ha sido diseñar e implementar un sistema integrado que permita la medición de variables climáticas (temperatura, humedad y luminosidad), el control y actuación sobre actuadores (servomotores y LEDs) en función de dichas mediciones, y la presentación de la información relevante en una interfaz LCD. 
+
+### 1.2. Pasos de Desarrollo
  
  A lo largo del desarrollo, se han seguido los pasos recomendados para:
 	
