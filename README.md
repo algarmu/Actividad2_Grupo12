@@ -165,17 +165,17 @@ Actividad 2 de la asignatura Equipos e Instrumentación Electrónica del Grupo 1
 
 5. Ventajas y Desventajas
 
-	Ventajas:
-	
-		Diseño modular: funciones de control separadas facilitan mantenimiento y ampliaciones
-		Componentes económicos y fáciles de conseguir
-		Respuesta rápida a cambios de variables climáticas
-		Simulación previa en Wokwi agiliza pruebas
-	
-	Desventajas
-	
-		Control ON-OFF sin histéresis ni regulación proporcional → posibles oscilaciones frecuentes
-		Movimiento completo de servos en cada activación (ineficiente para un actuador real)
-		Brillo de LED con solo tres niveles → transiciones bruscas
-		En hardware real, consumo de servos puede requerir fuente externa
-		Ausencia de registro histórico de datos (no hay almacenamiento ni transmisión remota)
+5.1 Ventajas:
+
+	Diseño modular: funciones de control separadas facilitan mantenimiento y ampliaciones
+	Componentes económicos y fáciles de conseguir
+	Respuesta rápida a cambios de variables climáticas
+	Simulación previa en Wokwi agiliza pruebas
+
+5.2 Desventajas:
+
+	Control ON-OFF sin histéresis ni regulación proporcional → posibles oscilaciones frecuentes
+	Movimiento completo de servos en cada activación (ineficiente para un actuador real)
+	Brillo de LED con solo tres niveles → transiciones bruscas
+	En hardware real, consumo de servos puede requerir fuente externa
+	Ausencia de registro histórico de datos (no hay almacenamiento ni transmisión remota)
