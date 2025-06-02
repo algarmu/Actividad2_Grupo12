@@ -2,6 +2,7 @@
 Actividad 2 de la asignatura Equipos e Instrumentación Electrónica del Grupo 12
 
 1. Introducción
+
 	El objetivo de la presente práctica ha sido diseñar e implementar un sistema integrado que permita la medición de variables climáticas (temperatura, humedad y luminosidad), el control y actuación sobre actuadores (servomotores y LEDs) en función de dichas mediciones, y la presentación de la información relevante en una interfaz LCD. A lo largo del desarrollo, se han seguido los pasos recomendados para:
 	
 	Extender el sistema de medición de la Actividad 1 incorporando nuevos sensores y acondicionadores
@@ -12,7 +13,9 @@ Actividad 2 de la asignatura Equipos e Instrumentación Electrónica del Grupo 1
 	Evaluar ventajas y desventajas del sistema creado
 
 2. Diseño del Sistema
+
 2.1. Componentes Hardware
+
 	Microcontrolador:
 		Arduino Uno
 	
@@ -32,6 +35,7 @@ Actividad 2 de la asignatura Equipos e Instrumentación Electrónica del Grupo 1
 		Fuente de 5 V (del propio Arduino o módulo externo en caso de demanda mayor)
 
 2.2. Diagrama de Conexiones
+
 	Se ha diseñado el siguiente esquema de conexión (simulado en Wokwi):
 		DHT22 conectado a pin digital D4 (datos)
 		LDR conectada a A0 con una resistencia de pull-down de 10 kΩ
@@ -42,9 +46,11 @@ Actividad 2 de la asignatura Equipos e Instrumentación Electrónica del Grupo 1
 		Display LCD I2C conectado a los pines SDA (A4) y SCL (A5) del Arduino
 
 3. Implementación del Sistema
+
 	A continuación se resumen los pasos seguidos para la implementación del sistema:
 
 3.1. Lectura de Sensores y Presentación Inicial (Actividad 1)
+
 	Previamente, en la Actividad 1, se había desarrollado la parte de medición y presentación de las variables de temperatura, humedad y luminosidad en el LCD. Para ello:
 		Se utilizó la librería DHT.h para leer datos de temperatura y humedad desde el sensor DHT22
 		Se implementó la lectura analógica de la LDR para obtener un valor bruto entre 0 y 1023, que se convertía a lux aproximados
@@ -53,6 +59,7 @@ Actividad 2 de la asignatura Equipos e Instrumentación Electrónica del Grupo 1
 		Estos pasos iniciales sentaron las bases para la integración de los algoritmos de control y actuación
 
 3.2. Control y Actuación sobre Humedad
+
 	En esta sección, se lee el valor de humedad obtenido por el sensor DHT22, activando un sevomotor cuando el nivel de humedad relativa supera el 50%,simulando una turbina que permite la liberación de humedad cuando esta es demasiado elevada, esta funcionalidad se implementa en la siguiente función:
 	
 	void humidityServo(float humidity){
@@ -153,6 +160,7 @@ Actividad 2 de la asignatura Equipos e Instrumentación Electrónica del Grupo 1
 	Ejecución continua del sistema para confirmar la integración de todos los componentes en el loop()
 
 5. Ventajas y Desventajas del Sistema Creado
+
 	A continuación se exponen las principales ventajas y desventajas identificadas tras la implementación y las pruebas del sistema:
 
 5. Ventajas y Desventajas
