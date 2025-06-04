@@ -84,7 +84,7 @@ Para ello:
 
 ### 3.3. Control y Actuación sobre Humedad
 
-	En esta sección, se lee el valor de humedad obtenido por el sensor DHT22, activando un sevomotor cuando el nivel de humedad relativa supera el 80%, con una histéresis del 10%, simulando una turbina que permite la liberación de humedad cuando esta es demasiado elevada. 
+En esta sección, se lee el valor de humedad obtenido por el sensor DHT22, activando un sevomotor cuando el nivel de humedad relativa supera el 80%, con una histéresis del 10%, simulando una turbina que permite la liberación de humedad cuando esta es demasiado elevada. 
  
 Las macros que definen el comportamiento del actuador son :
 
